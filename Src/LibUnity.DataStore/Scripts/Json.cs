@@ -2,9 +2,8 @@
 using UnityEngine;
 using JsonFx.Json;
 
-namespace LibUnity.Core {
+namespace LibUnity.DataStore {
   public class Json {
-
     public static string Encode(object data) {
       JsonWriterSettings settings = new JsonWriterSettings();
       settings.PrettyPrint = true;

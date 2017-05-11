@@ -2,8 +2,8 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace LibUnity.Core {
-  public class ResourceConfig : ConfigSelectorBase {
+namespace LibUnity.DataStore {
+  public class ResourceConfig : StoreSelectorBase {
     /**
      * Constructor
      *  

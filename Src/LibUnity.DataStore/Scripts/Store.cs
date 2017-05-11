@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 
-namespace LibUnity.Core {
+namespace LibUnity.DataStore {
   /**
-   * \class Config
+   * \class Store
    *
    * \brief 설정 정보 관리 라이브러리
    *
    * \author Lee, Hyeon-gi
    */
-  public class Config : UnityEngine.ScriptableObject {
+  public class Store : UnityEngine.ScriptableObject {
     /**
      * Constructor
      */
-    public Config() {
+    public Store() {
       configs = new Dictionary<string, object>();
     }
 
@@ -21,7 +21,7 @@ namespace LibUnity.Core {
      * 
      * \param selector 설정 로더 객체
      */
-    public void SetConfigSelector(ConfigSelectorBase selector) {
+    public void SetStoreSelector(StoreSelectorBase selector) {
       this.selector = selector;
     }
 
@@ -134,7 +134,7 @@ namespace LibUnity.Core {
     }
 
     private string path;
-    private ConfigSelectorBase selector;
+    private StoreSelectorBase selector;
     private Dictionary<string, object> configs;
   }
 }

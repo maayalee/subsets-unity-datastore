@@ -2,8 +2,8 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace LibUnity.Core {
-  public class StreammingAssetConfig : ConfigSelectorBase {
+namespace LibUnity.DataStore {
+  public class StreammingAssetConfig : StoreSelectorBase {
     /**
      * Constructor
      *  

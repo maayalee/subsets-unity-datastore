@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using LibUnity.Test;
+using LibUnity.UnitTest;
 
-namespace LibUnity.CoreTest.Core {
+namespace LibUnity.UnitTestTest.Core {
   class json_test: TestCase {
     [TestMethod]
     public void TestEncode() {
