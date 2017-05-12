@@ -106,6 +106,10 @@ namespace LibUnity.DataStore {
       }
     }
 
+    public void ClearAll() {
+      configs.Clear();
+    }
+
     /**
      * 설정 정보를 저장소에서 로드한다.
      *
