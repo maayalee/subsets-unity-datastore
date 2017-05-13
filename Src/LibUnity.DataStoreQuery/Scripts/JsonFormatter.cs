@@ -1,12 +1,10 @@
-﻿using System;
-using UnityEngine;
-using JsonFx.Json;
+﻿using JsonFx.Json;
 
 namespace LibUnity.DataStore {
-  public class Json {
-    public static string Encode(object data) {
+  public class JsonFormatter : FormatterBase {
+    public string Encode(object data, bool pretty_print = false) {
       JsonWriterSettings settings = new JsonWriterSettings();
-      settings.PrettyPrint = true;
+      settings.PrettyPrint = pretty_print;
 
       System.Text.StringBuilder result = new System.Text.StringBuilder();
       JsonWriter writer = new JsonWriter(result, settings);
@@ -16,7 +14,7 @@ namespace LibUnity.DataStore {
       return result.ToString();
     }
 
-    public static T Decode<T>(string json_string) {
+    public T Decode<T>(string json_string) {
       T result = JsonFx.Json.JsonReader.Deserialize<T>(json_string);
       if (null == result)
         throw new System.Exception("decode result is null");

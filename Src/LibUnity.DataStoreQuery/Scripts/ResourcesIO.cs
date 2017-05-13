@@ -3,14 +3,14 @@ using UnityEngine;
 using UnityEditor;
 
 namespace LibUnity.DataStore {
-  public class ResourceConfig : StoreSelectorBase {
+  public class ResourcesIO : IOBase {
     /**
      * Constructor
      *  
      * @param resource_path 설정 파일들이 있는 폴더 패스. 
      *        유니티 Resources 폴더 하위의 패스를 지정.
      */
-    public ResourceConfig(string resource_path) {
+    public ResourcesIO(string resource_path) {
       this.resource_path = resource_path;
     }
 
@@ -20,13 +20,13 @@ namespace LibUnity.DataStore {
       return null == asset ? false : true;
     }
 
-    public Dictionary<string, object> Load(string config_name) {
+    public Dictionary<string, object> Load(FormatterBase formatter, string config_name) {
       string path = GetSubPath() + "/" + config_name;
       TextAsset asset = Resources.Load<TextAsset>(path);
       if (null == asset)
-        throw new System.Exception("load failed. \"" + path + "\" asset is not exist in Resources folder");
-      Dictionary<string, object> result = Json.Decode<Dictionary<string, object>>(asset.text);
-      return result;
+        throw new System.Exception("load failed. \"" + path +
+          "\" asset is not exist in Resources folder");
+      return formatter.Decode<Dictionary<string, object>>(asset.text);
     }
 
     private string GetSubPath() {
@@ -47,18 +47,22 @@ namespace LibUnity.DataStore {
       return result;
     }
 
-    public void Save(string config_name, object data) {
+    public void Save(FormatterBase formatter, string config_name, object data) {
       bool has = Has(config_name);
-      string str = Json.Encode(data);//.Replace("{", Environment.NewLine + "{");
+      string str = formatter.Encode(data, true);
       System.IO.File.WriteAllText(resource_path + "/" + config_name + ".json", str);
+#if UNITY_EDITOR
       if (!has) {
         AssetDatabase.Refresh();
       }
+#endif
     }
 
     public void Delete(string config_name) {
       System.IO.File.Delete(resource_path + "/" + config_name + ".json");
+#if UNITY_EDITOR
       AssetDatabase.Refresh();
+#endif
     }
 
     private string resource_path;
