@@ -4,18 +4,18 @@ using LibUnity.DataStore;
 using LibUnity.UnitTest;
 using UnityEngine;
 
-namespace LibUnity.UnitTestTest.Core {
+namespace LibUnity.DataStoreTest {
   /**
    * \class StoreTest
    *
-   * \brief config 모듈 테스트 케이스
+   * \brief query 모듈 테스트 케이스
    *
    * \author Lee, Hyeon-gi
    */
   class StoreTest : TestCase {
     [TestMethod]
     public void TestGet() {
-      con = new Query(new ResourcesIO("Resources/config"), new JsonFormatter());
+      con = JsonStore.Create(new ResourcesIO("Resources/config"));
       Assert(con.Get<int>("test_config.var1") == 0, "get test_config.var1 is 0");
       Assert(con.Get<long>("test_config.var2") == 533157870896947200, "get test_config.var1 is 0");
       //Assert(con.Get<int>("test_config.var1") == 0, "get test_config.var1 is 0");
@@ -23,7 +23,7 @@ namespace LibUnity.UnitTestTest.Core {
 
     //[TestMethod]
     public void test_set() {
-      con = new Query(new ResourcesIO("config"), new JsonFormatter());
+      con = JsonStore.Create(new ResourcesIO("config"));
       con.Set<long>("test_config.var1", 10000);
       Assert(con.Get<long>("test_config.var1") == 10000, "get test_config.var1 is 10000");
 
@@ -33,7 +33,7 @@ namespace LibUnity.UnitTestTest.Core {
 
     //[TestMethod]
     public void TestGet_Failed() {
-      con = new Query(new ResourcesIO("config"), new JsonFormatter());
+      con = JsonStore.Create(new ResourcesIO("config"));
       Assert(!IsGetSuccess<string>(con, "test_config2.var"), "exception when wrong config name");
       Assert(IsGetSuccess<long>(con, "test_config.var1"), "success when valid type");
       Assert(!IsGetSuccess<string>(con, "test_config.var1"), "exception when wrong type");
@@ -50,11 +50,11 @@ namespace LibUnity.UnitTestTest.Core {
 
     private Query con = null;
 
-    private bool IsGetSuccess<T>(Query config, string path) {
+    private bool IsGetSuccess<T>(Query query, string path) {
 #pragma warning disable 0219, 0168
       bool rise_exception = false;
       try {
-        T var = config.Get<T>(path);
+        T var = query.Get<T>(path);
       }
       catch (System.Exception e) {
         rise_exception = true;

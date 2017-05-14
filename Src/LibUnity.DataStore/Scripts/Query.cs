@@ -14,10 +14,9 @@ namespace LibUnity.DataStore {
      * 
      * \param io 저장 대상 
      */
-    public Query(IOBase io, FormatterBase formatter) {
+    public Query(StoreBase store) {
       caches = new Dictionary<string, object>();
-      this.io = io;
-      this.formatter = formatter;
+      this.store = store;
     }
 
     /**
@@ -30,11 +29,11 @@ namespace LibUnity.DataStore {
      */
     public void Set<T>(string path, T value, bool persistent = false) {
       string[] tokens = path.Split('.');
-      string config_name = tokens[0];
-      if (!caches.ContainsKey(config_name)) {
-        Load(config_name);
+      string table_name = tokens[0];
+      if (!caches.ContainsKey(table_name)) {
+        Load(table_name);
       }
-      Dictionary<string, object> current = caches[config_name] as Dictionary<string, object>;
+      Dictionary<string, object> current = caches[table_name] as Dictionary<string, object>;
       for (int i = 1; i < tokens.Length; ++i) {
         string name = tokens[i];
         if (i == (tokens.Length - 1))
@@ -46,7 +45,7 @@ namespace LibUnity.DataStore {
         }
       }
       if (persistent) {
-        Apply(config_name);
+        Apply(table_name);
       }
     }
  
@@ -61,11 +60,11 @@ namespace LibUnity.DataStore {
     public T Get<T>(string path) {
       this.path = path;
       string[] tokens = path.Split('.');
-      string config_name = tokens[0];
-      if (!caches.ContainsKey(config_name)) {
-        Load(config_name);
+      string table_name = tokens[0];
+      if (!caches.ContainsKey(table_name)) {
+        Load(table_name);
       }
-      Dictionary<string, object> current = caches[config_name] as Dictionary<string, object>;
+      Dictionary<string, object> current = caches[table_name] as Dictionary<string, object>;
       T result = default(T);
       for (int i = 1; i < tokens.Length; ++i) {
         string name = tokens[i];
@@ -94,10 +93,10 @@ namespace LibUnity.DataStore {
       return current[name] as Dictionary<string, object>;
     }
 
-    public void Clear(string config_name, bool persistent = false) {
-      caches.Remove(config_name);
+    public void Clear(string table_name, bool persistent = false) {
+      caches.Remove(table_name);
       if (persistent) {
-        Apply(config_name);
+        Apply(table_name);
       }
     }
 
@@ -108,33 +107,32 @@ namespace LibUnity.DataStore {
     /**
      * 설정 정보를 저장소에서 로드한다.
      *
-     * \param config_name 설정 정보명 
+     * \param table_name 설정 정보명 
      */
-    public void Load(string config_name) {
-      if (io.Has(config_name)) {
-        caches[config_name] = io.Load(formatter, config_name);
+    public void Load(string table_name) {
+      if (store.Exist(table_name)) {
+        caches[table_name] = store.Load(table_name);
       }
       else
-        caches[config_name] = new Dictionary<string, object>();
+        caches[table_name] = new Dictionary<string, object>();
     }
 
     /**
      * 데이터를 를 저장소에 반영한다.
      *
-     * \param config_name 설정 정보명 
+     * \param table_name 설정 정보명 
      */
-    public void Apply(string config_name) {
-      if (caches.ContainsKey(config_name)) {
-        io.Save(formatter, config_name, caches[config_name]);
+    public void Apply(string table_name) {
+      if (caches.ContainsKey(table_name)) {
+        store.Save(table_name, caches[table_name]);
       }
       else {
-        io.Delete(config_name);
+        store.Delete(table_name);
       }
     }
 
     private string path;
-    private IOBase io;
-    private FormatterBase formatter;
+    private StoreBase store;
     private Dictionary<string, object> caches;
   }
 }
