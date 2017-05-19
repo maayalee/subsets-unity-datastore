@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
+﻿
 namespace LibUnity.DataStore {
   public class FileIO : IOBase {
     /**

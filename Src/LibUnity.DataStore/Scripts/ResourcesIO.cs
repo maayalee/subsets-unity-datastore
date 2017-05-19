@@ -1,6 +1,4 @@
-﻿﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
 
 namespace LibUnity.DataStore {
   public class ResourcesIO : IOBase {
