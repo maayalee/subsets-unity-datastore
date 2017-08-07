@@ -31,7 +31,7 @@ namespace LibUnity.DataStore {
       string[] tokens = path.Split('.');
       string table_name = tokens[0];
       if (!caches.ContainsKey(table_name)) {
-        Load(table_name);
+        Load<object>(table_name);
       }
       Dictionary<string, object> current = caches[table_name] as Dictionary<string, object>;
       for (int i = 1; i < tokens.Length; ++i) {
@@ -62,18 +62,18 @@ namespace LibUnity.DataStore {
      * \retrun 조회하려는 데이터 타입
      * \throw Exception
      */
-    public T Get<T>(string path) {
+    public ConvertType Get<ConvertType>(string path) {
       this.path = path;
       string[] tokens = path.Split('.');
       if (!caches.ContainsKey(tokens[0])) {
-        Load(tokens[0]);
+        Load<object>(tokens[0]);
       }
       object current = caches;
-      T result = default(T);
+      ConvertType result = default(ConvertType);
       for (int i = 0; i < tokens.Length; ++i) {
         string name = tokens[i];
         if (i == (tokens.Length - 1))
-          result = GetVar<T>(current as Dictionary<string, object>, name);
+          result = GetVar<ConvertType>(current as Dictionary<string, object>, name);
         else
           current = NextToken(current as Dictionary<string, object>, name);
       }
@@ -113,9 +113,9 @@ namespace LibUnity.DataStore {
      *
      * \param table_name 설정 정보명 
      */
-    public void Load(string table_name) {
+    public void Load<Type>(string table_name) {
       if (store.Exist(table_name)) {
-        caches[table_name] = store.Load<object>(table_name);
+        caches[table_name] = store.Load<Type>(table_name);
       }
       else
         caches[table_name] = new Dictionary<string, object>();

@@ -17,8 +17,7 @@ namespace LibUnity.DataStore {
     public string Read(string table) {
       TextAsset asset = Resources.Load<TextAsset>(store_path + "/" + table);
       if (null == asset)
-        throw new System.Exception("load failed. \"" + table +
-          "\" asset is not exist in Resources folder");
+        throw new System.Exception("load failed. \"" + table + "\" asset is not exist in Resources folder");
       return asset.text;
     }
 
