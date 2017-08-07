@@ -11,9 +11,8 @@ namespace LibUnity.DataStore {
       return io.Exist(table_name);
     }
 
-    public Dictionary<string, object> Load(string table_name) {
-      string text = io.Read(table_name);
-      return Decode<Dictionary<string, object>>(text);
+    public T Load<T>(string table_name) {
+      return Decode<T>(io.Read(table_name));
     }
 
     public void Save(string table_name, object data) {

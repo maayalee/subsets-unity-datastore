@@ -48,9 +48,14 @@ namespace LibUnity.DataStore {
         Apply(table_name);
       }
     }
- 
+
     /**
      * 설정값을 조회한다.
+     * 
+     * \todo
+        현재 json 포맺의 최상위가 배열인 경우 처리하지 못한다. 배열관련 문법을 지원하도록 해야 한다.
+        query.Get<object[]>("items");
+        query.Get<Dictinary<string,object>>("items[0]");
      *
      * \param path .(dot) 단위로 정의된 값 path.
      * 
@@ -60,18 +65,17 @@ namespace LibUnity.DataStore {
     public T Get<T>(string path) {
       this.path = path;
       string[] tokens = path.Split('.');
-      string table_name = tokens[0];
-      if (!caches.ContainsKey(table_name)) {
-        Load(table_name);
+      if (!caches.ContainsKey(tokens[0])) {
+        Load(tokens[0]);
       }
-      Dictionary<string, object> current = caches[table_name] as Dictionary<string, object>;
+      object current = caches;
       T result = default(T);
-      for (int i = 1; i < tokens.Length; ++i) {
+      for (int i = 0; i < tokens.Length; ++i) {
         string name = tokens[i];
         if (i == (tokens.Length - 1))
-          result = GetVar<T>(current, name);
+          result = GetVar<T>(current as Dictionary<string, object>, name);
         else
-          current = NextToken(current, name);
+          current = NextToken(current as Dictionary<string, object>, name);
       }
       return result;
     }
@@ -111,7 +115,7 @@ namespace LibUnity.DataStore {
      */
     public void Load(string table_name) {
       if (store.Exist(table_name)) {
-        caches[table_name] = store.Load(table_name);
+        caches[table_name] = store.Load<object>(table_name);
       }
       else
         caches[table_name] = new Dictionary<string, object>();
