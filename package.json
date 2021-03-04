@@ -1,0 +1,17 @@
+{
+  "name": "com.maayalee.libunity-datastore",
+  "version": "1.0.0",
+  "displayName": "libunity-datastore",
+  "unity": "2019.4",
+  "unityRelease": "21f1",
+  "keywords": [],
+  "author": {
+    "name": "Lee, Hyeon-gi",
+    "email": "maaya.lee@gmail.com",
+    "url": ""
+  },
+  "type": "library",
+  "dependencies": {
+    "com.maayalee.libunity-unitest": "https://github.com/maayalee/libunity-unittest.git#1.0.0"
+  }
+}

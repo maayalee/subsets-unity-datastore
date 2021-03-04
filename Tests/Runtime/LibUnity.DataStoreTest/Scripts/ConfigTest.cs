@@ -6,24 +6,24 @@ using UnityEngine;
 
 namespace LibUnity.DataStoreTest {
   /**
-   * \class StoreTest
+   * \class ConfigTest
    *
    * \brief query 모듈 테스트 케이스
    *
    * \author Lee, Hyeon-gi
    */
-  class StoreTest : TestCase {
+  class ConfigTest : TestCase {
     [TestMethod]
     public void TestGet() {
-      con = JsonStore.Create(new ResourcesIO("Resources/config"));
+      con = JsonStore.Create(new ResourcesIO("LibUnity.DataStoreTest/environment"));
       Assert(con.Get<int>("test_config.var1") == 0, "get test_config.var1 is 0");
       Assert(con.Get<long>("test_config.var2") == 533157870896947200, "get test_config.var1 is 0");
       //Assert(con.Get<int>("test_config.var1") == 0, "get test_config.var1 is 0");
     }
 
-    //[TestMethod]
-    public void test_set() {
-      con = JsonStore.Create(new ResourcesIO("config"));
+    [TestMethod]
+    public void testSet() {
+      con = JsonStore.Create(new ResourcesIO("LibUnity.DataStoreTest/environment"));
       con.Set<long>("test_config.var1", 10000);
       Assert(con.Get<long>("test_config.var1") == 10000, "get test_config.var1 is 10000");
 
@@ -31,11 +31,11 @@ namespace LibUnity.DataStoreTest {
       Assert(con.Get<long>("test_config.var2") == 10, "get test_config.var1 is 10000");
     }
 
-    //[TestMethod]
-    public void TestGet_Failed() {
-      con = JsonStore.Create(new ResourcesIO("config"));
+    [TestMethod]
+    public void TestGetFailed() {
+      con = JsonStore.Create(new ResourcesIO("LibUnity.DataStoreTest/environment"));
       Assert(!IsGetSuccess<string>(con, "test_config2.var"), "exception when wrong config name");
-      Assert(IsGetSuccess<long>(con, "test_config.var1"), "success when valid type");
+      Assert(IsGetSuccess<int>(con, "test_config.var1"), "success when valid type");
       Assert(!IsGetSuccess<string>(con, "test_config.var1"), "exception when wrong type");
       Assert(IsGetSuccess<double>(con, "test_config.var_float"), "success when cast enable type");
       Assert(!IsGetSuccess<float>(con, "test_config.var_float"), "exception when wrong type");

@@ -1,0 +1,17 @@
+{
+    "name": "LibUnity.DataStoreTest",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d3143601704a03b4b9fba19c5c03c155",
+        "GUID:59a38435c58119f419aa6708555887f8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
